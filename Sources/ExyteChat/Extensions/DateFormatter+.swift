@@ -4,7 +4,7 @@
 
 import Foundation
 
-extension DateFormatter {
+public extension DateFormatter {
     static let timeFormatter = {
         let formatter = DateFormatter()
 

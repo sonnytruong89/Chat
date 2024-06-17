@@ -52,7 +52,7 @@ struct RecordWaveformWithButtons: View {
     }
 }
 
-struct RecordWaveformPlaying: View {
+public struct RecordWaveformPlaying: View {
 
     var samples: [CGFloat] // 0...1
     var progress: CGFloat
@@ -63,7 +63,7 @@ struct RecordWaveformPlaying: View {
         max((RecordWaveform.spacing + RecordWaveform.width) * CGFloat(samples.count) - RecordWaveform.spacing, 0)
     }
 
-    var body: some View {
+    public var body: some View {
         GeometryReader { g in
             ZStack {
                 let adjusted = adjustedSamples(g.size.width)

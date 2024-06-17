@@ -8,7 +8,7 @@
 import Combine
 import AVFoundation
 
-final class RecordingPlayer: ObservableObject {
+public final class RecordingPlayer: ObservableObject {
 
     @Published var playing = false
     @Published var duration: Double = 0.0

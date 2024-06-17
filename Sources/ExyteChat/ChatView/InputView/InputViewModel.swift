@@ -6,7 +6,7 @@ import Foundation
 import Combine
 import ExyteMediaPicker
 
-final class InputViewModel: ObservableObject {
+public final class InputViewModel: ObservableObject {
     
     @Published var attachments = InputViewAttachments()
     @Published var state: InputViewState = .empty

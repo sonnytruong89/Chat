@@ -4,7 +4,7 @@
 
 import SwiftUI
 
-struct TextInputView: View {
+public struct TextInputView: View {
 
     @Environment(\.chatTheme) private var theme
 
@@ -15,7 +15,7 @@ struct TextInputView: View {
     var style: InputViewStyle
     var availableInput: AvailableInputType
 
-    var body: some View {
+    public var body: some View {
         TextField("", text: $text, axis: .vertical)
             .customFocus($globalFocusState.focus, equals: .uuid(inputFieldId))
             .placeholder(when: text.isEmpty) {

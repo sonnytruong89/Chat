@@ -41,12 +41,12 @@ struct AttachmentCell: View {
     }
 }
 
-struct AsyncImageView: View {
+public struct AsyncImageView: View {
 
     @Environment(\.chatTheme) var theme
     let url: URL
 
-    var body: some View {
+    public var body: some View {
         CachedAsyncImage(url: url, urlCache: .imageCache) { imageView in
             imageView
                 .resizable()
