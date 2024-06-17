@@ -24,7 +24,7 @@ public final class RecordingPlayer: ObservableObject {
     private var player: AVPlayer?
     private var timeObserver: Any?
 
-    init() {
+    public init() {
         try? audioSession.setCategory(.playback)
         try? audioSession.overrideOutputAudioPort(.speaker)
     }
