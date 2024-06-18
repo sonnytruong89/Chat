@@ -8,15 +8,15 @@ import ExyteMediaPicker
 
 public final class InputViewModel: ObservableObject {
     
-    @Published var attachments = InputViewAttachments()
-    @Published var state: InputViewState = .empty
+    @Published public var attachments = InputViewAttachments()
+    @Published public var state: InputViewState = .empty
 
     @Published var showPicker = false
-    @Published var mediaPickerMode = MediaPickerMode.photos
+    @Published public var mediaPickerMode = MediaPickerMode.photos
 
     @Published var showActivityIndicator = false
 
-    var recordingPlayer: RecordingPlayer?
+    public var recordingPlayer: RecordingPlayer?
     var didSendMessage: ((DraftMessage) -> Void)?
 
     private var recorder = Recorder()
@@ -48,7 +48,7 @@ public final class InputViewModel: ObservableObject {
             .store(in: &subscriptions)
     }
 
-    func inputViewAction() -> (InputViewAction) -> Void {
+    public func inputViewAction() -> (InputViewAction) -> Void {
         { [weak self] in
             self?.inputViewActionInternal($0)
         }

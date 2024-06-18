@@ -8,18 +8,18 @@
 import SwiftUI
 
 extension View {
-    func viewSize(_ size: CGFloat) -> some View {
+    public func viewSize(_ size: CGFloat) -> some View {
         self.frame(width: size, height: size)
     }
 
-    func circleBackground(_ color: Color) -> some View {
+    public func circleBackground(_ color: Color) -> some View {
         self.background {
             Circle().fill(color)
         }
     }
 
     @ViewBuilder
-    func applyIf<T: View>(_ condition: Bool, apply: (Self) -> T) -> some View {
+    public func applyIf<T: View>(_ condition: Bool, apply: (Self) -> T) -> some View {
         if condition {
             apply(self)
         } else {
