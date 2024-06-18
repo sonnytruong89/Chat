@@ -50,7 +50,7 @@ public enum InputViewState {
     case playingRecording
     case pausedRecording
 
-    var canSend: Bool {
+    public var canSend: Bool {
         switch self {
         case .hasTextOrMedia, .hasRecording, .isRecordingTap, .playingRecording, .pausedRecording: return true
         default: return false

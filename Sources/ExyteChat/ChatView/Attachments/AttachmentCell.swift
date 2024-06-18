@@ -46,6 +46,10 @@ public struct AsyncImageView: View {
     @Environment(\.chatTheme) var theme
     public let url: URL
 
+    public init(url: URL){
+        self.url = url
+    }
+
     public var body: some View {
         CachedAsyncImage(url: url, urlCache: .imageCache) { imageView in
             imageView
