@@ -5,15 +5,22 @@
 import SwiftUI
 
 public struct TextInputView: View {
-
+    
     @Environment(\.chatTheme) private var theme
-
+    
     @EnvironmentObject private var globalFocusState: GlobalFocusState
-
+    
     @Binding var text: String
     var inputFieldId: UUID
     var style: InputViewStyle
     var availableInput: AvailableInputType
+    
+    public init(text: Binding<String>, inputFieldId: UUID, style: InputViewStyle, availableInput: AvailableInputType) {
+        self._text = text
+        self.inputFieldId = inputFieldId
+        self.style = style
+        self.availableInput = availableInput
+    }
 
     public var body: some View {
         TextField("", text: $text, axis: .vertical)
