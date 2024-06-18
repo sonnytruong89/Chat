@@ -112,12 +112,10 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
 
     public init(messages: [Message],
                 didSendMessage: @escaping (DraftMessage) -> Void,
-                messageBuilder: @escaping MessageBuilderClosure,
                 customInputViewBuilder: @escaping CustomInputViewBuilderClosure) {
         self.didSendMessage = didSendMessage
         self.sections = ChatView.mapMessages(messages)
         self.ids = messages.map { $0.id }
-        self.messageBuilder = messageBuilder
         self.customInputViewBuilder = customInputViewBuilder
     }
     
