@@ -35,6 +35,8 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
     public typealias InputViewBuilderClosure = ((
         Binding<String>, InputViewAttachments, InputViewState, InputViewStyle, @escaping (InputViewAction) -> Void, ()->()) -> InputViewContent)
 
+    public typealias CustomInputViewBuilderClosure = ((InputViewModel, UUID, InputViewStyle, AvailableInputType, Bool) -> InputViewContent)
+    
     /// User and MessageId
     public typealias TapAvatarClosure = (User, String) -> ()
 
@@ -56,6 +58,9 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
     /// provide custom input view builder
     var inputViewBuilder: InputViewBuilderClosure? = nil
 
+    /// provide custom input view builder
+    var customInputViewBuilder: CustomInputViewBuilderClosure? = nil
+
     // MARK: - Customization
 
     var type: ChatType = .chat
@@ -69,17 +74,17 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
     var orientationHandler: MediaPickerOrientationHandler = {_ in}
     var chatTitle: String?
     var showMessageTimeView = true
-    public var messageFont = UIFontMetrics.default.scaledFont(for: UIFont.systemFont(ofSize: 15))
-    public var availablelInput: AvailableInputType = .full
+    var messageFont = UIFontMetrics.default.scaledFont(for: UIFont.systemFont(ofSize: 15))
+    var availablelInput: AvailableInputType = .full
 
     @StateObject private var viewModel = ChatViewModel()
-    @StateObject public var inputViewModel = InputViewModel()
-    @StateObject public var globalFocusState = GlobalFocusState()
+    @StateObject private var inputViewModel = InputViewModel()
+    @StateObject private var globalFocusState = GlobalFocusState()
     @StateObject private var paginationState = PaginationState()
     @StateObject private var networkMonitor = NetworkMonitor()
     @StateObject private var keyboardState = KeyboardState()
 
-    @State public var inputFieldId = UUID()
+    @State private var inputFieldId = UUID()
 
     @State private var isScrolledToBottom: Bool = true
     @State private var shouldScrollToTop: () -> () = {}
@@ -105,6 +110,17 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
         self.inputViewBuilder = inputViewBuilder
     }
 
+    public init(messages: [Message],
+                didSendMessage: @escaping (DraftMessage) -> Void,
+                messageBuilder: @escaping MessageBuilderClosure,
+                customInputViewBuilder: @escaping CustomInputViewBuilderClosure) {
+        self.didSendMessage = didSendMessage
+        self.sections = ChatView.mapMessages(messages)
+        self.ids = messages.map { $0.id }
+        self.messageBuilder = messageBuilder
+        self.customInputViewBuilder = customInputViewBuilder
+    }
+    
     public var body: some View {
         VStack {
             if showNetworkConnectionProblem, !networkMonitor.isConnected {
@@ -265,6 +281,8 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
                 inputViewBuilder($inputViewModel.attachments.text, inputViewModel.attachments, inputViewModel.state, .message, inputViewModel.inputViewAction()) {
                     globalFocusState.focus = nil
                 }
+            } else if let customInputViewBuilder = customInputViewBuilder {
+                customInputViewBuilder(inputViewModel, inputFieldId, .message, availablelInput, messageUseMarkdown)
             } else {
                 InputView(
                     viewModel: inputViewModel,

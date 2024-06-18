@@ -4,6 +4,6 @@
 
 import Foundation
 
-public final class GlobalFocusState: ObservableObject {
+final class GlobalFocusState: ObservableObject {
     @Published var focus: Focusable?
 }

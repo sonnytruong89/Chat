@@ -28,12 +28,12 @@ public final class InputViewModel: ObservableObject {
         
     }
 
-    public func onStart() {
+    func onStart() {
         subscribeValidation()
         subscribePicker()
     }
 
-    public func onStop() {
+    func onStop() {
         subscriptions.removeAll()
     }
 
