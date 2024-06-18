@@ -54,10 +54,10 @@ struct RecordWaveformWithButtons: View {
 
 public struct RecordWaveformPlaying: View {
 
-    var samples: [CGFloat] // 0...1
-    var progress: CGFloat
-    var color: Color
-    var addExtraDots: Bool
+    public var samples: [CGFloat] // 0...1
+    public var progress: CGFloat
+    public var color: Color
+    public var addExtraDots: Bool
 
     var maxLength: CGFloat {
         max((RecordWaveform.spacing + RecordWaveform.width) * CGFloat(samples.count) - RecordWaveform.spacing, 0)

@@ -44,7 +44,7 @@ struct AttachmentCell: View {
 public struct AsyncImageView: View {
 
     @Environment(\.chatTheme) var theme
-    let url: URL
+    public let url: URL
 
     public var body: some View {
         CachedAsyncImage(url: url, urlCache: .imageCache) { imageView in

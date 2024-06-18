@@ -11,6 +11,10 @@ public struct RecordIndicator: View {
 
     let count = 2
 
+    public init() {
+        
+    }
+
     public var body: some View {
         let animation = Animation
             .linear(duration: 1)
