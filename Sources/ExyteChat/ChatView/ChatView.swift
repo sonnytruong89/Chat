@@ -69,17 +69,17 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
     var orientationHandler: MediaPickerOrientationHandler = {_ in}
     var chatTitle: String?
     var showMessageTimeView = true
-    var messageFont = UIFontMetrics.default.scaledFont(for: UIFont.systemFont(ofSize: 15))
-    var availablelInput: AvailableInputType = .full
+    public var messageFont = UIFontMetrics.default.scaledFont(for: UIFont.systemFont(ofSize: 15))
+    public var availablelInput: AvailableInputType = .full
 
     @StateObject private var viewModel = ChatViewModel()
-    @StateObject private var inputViewModel = InputViewModel()
-    @StateObject private var globalFocusState = GlobalFocusState()
+    @StateObject public var inputViewModel = InputViewModel()
+    @StateObject public var globalFocusState = GlobalFocusState()
     @StateObject private var paginationState = PaginationState()
     @StateObject private var networkMonitor = NetworkMonitor()
     @StateObject private var keyboardState = KeyboardState()
 
-    @State private var inputFieldId = UUID()
+    @State public var inputFieldId = UUID()
 
     @State private var isScrolledToBottom: Bool = true
     @State private var shouldScrollToTop: () -> () = {}
