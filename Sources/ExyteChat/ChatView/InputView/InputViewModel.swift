@@ -24,6 +24,10 @@ public final class InputViewModel: ObservableObject {
     private var recordPlayerSubscription: AnyCancellable?
     private var subscriptions = Set<AnyCancellable>()
 
+    public init() {
+        
+    }
+
     func onStart() {
         subscribeValidation()
         subscribePicker()
