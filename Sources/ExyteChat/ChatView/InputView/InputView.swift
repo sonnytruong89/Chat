@@ -17,7 +17,7 @@ public enum InputViewStyle {
         case .message:
             return "Type a message..."
         case .signature:
-            return "Add signature..."
+            return "Add message..."
         }
     }
 }
@@ -37,11 +37,14 @@ public enum InputViewAction {
     case pauseRecord
     //    case location
     //    case document
+    case roshambo
+    case giphy
 }
 
 public enum InputViewState {
     case empty
     case hasTextOrMedia
+    case hasGiphy
 
     case waitingForRecordingPermission
     case isRecordingHold
@@ -52,7 +55,7 @@ public enum InputViewState {
 
     public var canSend: Bool {
         switch self {
-        case .hasTextOrMedia, .hasRecording, .isRecordingTap, .playingRecording, .pausedRecording: return true
+        case .hasTextOrMedia, .hasGiphy, .hasRecording, .isRecordingTap, .playingRecording, .pausedRecording: return true
         default: return false
         }
     }
@@ -68,6 +71,7 @@ public struct InputViewAttachments {
     public var medias: [Media] = []
     public var recording: Recording?
     public var replyMessage: ReplyMessage?
+    public var giphyId: String?
 }
 
 struct InputView: View {
@@ -318,6 +322,7 @@ struct InputView: View {
             theme.images.inputView.arrowSend
                 .viewSize(48)
                 .circleBackground(theme.colors.sendButtonBackground)
+                .foregroundColor(.white)
         }
     }
 

@@ -9,6 +9,7 @@ import SwiftUI
 import FloatingButton
 import SwiftUIIntrospect
 import ExyteMediaPicker
+import GiphyUISDK
 
 public typealias MediaPickerParameters = SelectionParamsHolder
 
@@ -49,6 +50,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
     private let sections: [MessagesSection]
     private let ids: [String]
     private let didSendMessage: (DraftMessage) -> Void
+    private let giphyAPIKey: String?
 
     // MARK: - View builders
 
@@ -100,6 +102,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
     @State private var menuScrollView: UIScrollView?
 
     public init(messages: [Message],
+                giphyAPIKey: String? = nil,
                 didSendMessage: @escaping (DraftMessage) -> Void,
                 messageBuilder: @escaping MessageBuilderClosure,
                 inputViewBuilder: @escaping InputViewBuilderClosure) {
@@ -108,15 +111,22 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
         self.ids = messages.map { $0.id }
         self.messageBuilder = messageBuilder
         self.inputViewBuilder = inputViewBuilder
+
+        self.giphyAPIKey = giphyAPIKey
+        Giphy.configure(apiKey: giphyAPIKey ?? "")
     }
 
     public init(messages: [Message],
+                giphyAPIKey: String? = nil,
                 didSendMessage: @escaping (DraftMessage) -> Void,
                 customInputViewBuilder: @escaping CustomInputViewBuilderClosure) {
         self.didSendMessage = didSendMessage
         self.sections = ChatView.mapMessages(messages)
         self.ids = messages.map { $0.id }
         self.customInputViewBuilder = customInputViewBuilder
+        
+        self.giphyAPIKey = giphyAPIKey
+        Giphy.configure(apiKey: giphyAPIKey ?? "")
     }
     
     public var body: some View {
@@ -177,6 +187,9 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
             if $0 {
                 globalFocusState.focus = nil
             }
+        }
+        .sheet(isPresented: $inputViewModel.showGiphy) {
+            GiphyPickerView(apiKey: giphyAPIKey ?? "", inputViewModel: inputViewModel)
         }
         .environmentObject(keyboardState)
     }
@@ -518,34 +531,60 @@ public extension ChatView {
 public extension ChatView where MessageContent == EmptyView {
 
     init(messages: [Message],
+         giphyAPIKey: String? = nil,
          didSendMessage: @escaping (DraftMessage) -> Void,
          inputViewBuilder: @escaping InputViewBuilderClosure) {
         self.didSendMessage = didSendMessage
         self.sections = ChatView.mapMessages(messages)
         self.ids = messages.map { $0.id }
         self.inputViewBuilder = inputViewBuilder
+        
+        self.giphyAPIKey = giphyAPIKey
+        Giphy.configure(apiKey: giphyAPIKey ?? "")
     }
 }
 
 public extension ChatView where InputViewContent == EmptyView {
 
     init(messages: [Message],
+         giphyAPIKey: String? = nil,
          didSendMessage: @escaping (DraftMessage) -> Void,
          messageBuilder: @escaping MessageBuilderClosure) {
         self.didSendMessage = didSendMessage
         self.sections = ChatView.mapMessages(messages)
         self.ids = messages.map { $0.id }
         self.messageBuilder = messageBuilder
+        
+        self.giphyAPIKey = giphyAPIKey
+        Giphy.configure(apiKey: giphyAPIKey ?? "")
     }
 }
 
 public extension ChatView where MessageContent == EmptyView, InputViewContent == EmptyView {
 
     init(messages: [Message],
+         giphyAPIKey: String? = nil,
          didSendMessage: @escaping (DraftMessage) -> Void) {
         self.didSendMessage = didSendMessage
         self.sections = ChatView.mapMessages(messages)
         self.ids = messages.map { $0.id }
+        
+        self.giphyAPIKey = giphyAPIKey
+        Giphy.configure(apiKey: giphyAPIKey ?? "")
     }
 }
 
+public extension ChatView where MessageContent == EmptyView {
+    init(messages: [Message],
+         giphyAPIKey: String? = nil,
+         didSendMessage: @escaping (DraftMessage) -> Void,
+         customInputViewBuilder: @escaping CustomInputViewBuilderClosure) {
+        self.didSendMessage = didSendMessage
+        self.sections = ChatView.mapMessages(messages)
+        self.ids = messages.map { $0.id }
+        self.customInputViewBuilder = customInputViewBuilder
+        
+        self.giphyAPIKey = giphyAPIKey
+        Giphy.configure(apiKey: giphyAPIKey ?? "")
+    }
+}

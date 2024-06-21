@@ -53,6 +53,7 @@ public struct Message: Identifiable, Hashable {
     public var attachments: [Attachment]
     public var recording: Recording?
     public var replyMessage: ReplyMessage?
+    public var giphyId: String?
 
     public init(id: String,
                 user: User,
@@ -61,7 +62,8 @@ public struct Message: Identifiable, Hashable {
                 text: String = "",
                 attachments: [Attachment] = [],
                 recording: Recording? = nil,
-                replyMessage: ReplyMessage? = nil) {
+                replyMessage: ReplyMessage? = nil,
+                giphyId: String? = nil) {
 
         self.id = id
         self.user = user
@@ -71,6 +73,7 @@ public struct Message: Identifiable, Hashable {
         self.attachments = attachments
         self.recording = recording
         self.replyMessage = replyMessage
+        self.giphyId = giphyId
     }
 
     public static func makeMessage(
@@ -94,7 +97,7 @@ public struct Message: Identifiable, Hashable {
                 }
             }
 
-            return Message(id: id, user: user, status: status, createdAt: draft.createdAt, text: draft.text, attachments: attachments, recording: draft.recording, replyMessage: draft.replyMessage)
+            return Message(id: id, user: user, status: status, createdAt: draft.createdAt, text: draft.text, attachments: attachments, recording: draft.recording, replyMessage: draft.replyMessage, giphyId: draft.giphyId)
         }
 }
 
@@ -133,28 +136,31 @@ public struct ReplyMessage: Codable, Identifiable, Hashable {
     public var text: String
     public var attachments: [Attachment]
     public var recording: Recording?
+    public var giphyId: String?
 
     public init(id: String,
                 user: User,
                 text: String = "",
                 attachments: [Attachment] = [],
-                recording: Recording? = nil) {
+                recording: Recording? = nil,
+                giphyId: String? = nil) {
 
         self.id = id
         self.user = user
         self.text = text
         self.attachments = attachments
         self.recording = recording
+        self.giphyId = giphyId
     }
 
     func toMessage() -> Message {
-        Message(id: id, user: user, text: text, attachments: attachments, recording: recording)
+        Message(id: id, user: user, text: text, attachments: attachments, recording: recording, giphyId: giphyId)
     }
 }
 
 public extension Message {
 
     func toReplyMessage() -> ReplyMessage {
-        ReplyMessage(id: id, user: user, text: text, attachments: attachments, recording: recording)
+        ReplyMessage(id: id, user: user, text: text, attachments: attachments, recording: recording, giphyId: giphyId)
     }
 }

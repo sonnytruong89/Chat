@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import GiphyUISDK
 
 struct MessageView: View {
 
@@ -101,23 +102,21 @@ struct MessageView: View {
                         }
                 }
                 bubbleView(message)
-            }
-
-            // Ditch the status
-            if message.user.isCurrentUser, let status = message.status {
-                MessageStatusView(status: status) {
-                    if case let .error(draft) = status {
-                        viewModel.sendMessage(draft)
-                    }
-                }
-                .sizeGetter($statusSize)
-                .opacity(0)
+                    .padding(.trailing, 10)
             }
         }
         .padding(.top, topPadding)
         .padding(.bottom, bottomPadding)
         .padding(message.user.isCurrentUser ? .leading : .trailing, MessageView.horizontalBubblePadding)
+        
         .frame(maxWidth: UIScreen.main.bounds.width, alignment: message.user.isCurrentUser ? .trailing : .leading)
+        .onAppear {
+            if message.user.isCurrentUser,
+               let status = message.status,
+               case let .error(draft) = status {
+                viewModel.sendMessage(draft)
+            }
+        }
     }
 
     @ViewBuilder
@@ -139,6 +138,10 @@ struct MessageView: View {
                         .padding(.bottom, 8)
                         .padding(.trailing, 12)
                 }
+            }
+            
+            if message.giphyId != nil {
+                giphyView(message)
             }
         }
         .bubbleBackground(message, theme: theme)
@@ -164,6 +167,10 @@ struct MessageView: View {
 
             if let recording = message.recording {
                 recordingView(recording)
+            }
+            
+            if message.giphyId != nil {
+                giphyView(message)
             }
         }
         .font(.caption2)
@@ -258,6 +265,11 @@ struct MessageView: View {
         )
         .padding(.horizontal, MessageView.horizontalTextPadding)
         .padding(.top, 8)
+    }
+
+    @ViewBuilder
+    func giphyView(_ message: Message) -> some View {
+        GiphyDisplayView(giphyId: message.giphyId ?? "")
     }
 
     func messageTimeView(needsCapsule: Bool = false) -> some View {

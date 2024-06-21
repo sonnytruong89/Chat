@@ -12,6 +12,8 @@ public final class InputViewModel: ObservableObject {
     @Published public var state: InputViewState = .empty
 
     @Published var showPicker = false
+    @Published public var showRoshambo = false
+    @Published public var showGiphy = false
     @Published public var mediaPickerMode = MediaPickerMode.photos
 
     @Published var showActivityIndicator = false
@@ -31,6 +33,8 @@ public final class InputViewModel: ObservableObject {
     func onStart() {
         subscribeValidation()
         subscribePicker()
+        subscribeGiphy()
+        subscribeRoshambo()
     }
 
     func onStop() {
@@ -97,6 +101,10 @@ public final class InputViewModel: ObservableObject {
         case .pauseRecord:
             state = .pausedRecording
             recordingPlayer?.pause()
+        case .roshambo:
+            showRoshambo = true
+        case .giphy:
+            showGiphy = true
         }
     }
 
@@ -129,7 +137,8 @@ private extension InputViewModel {
                 self.state = .hasTextOrMedia
             } else if self.attachments.text.isEmpty,
                       self.attachments.medias.isEmpty,
-                      self.attachments.recording == nil {
+                      self.attachments.recording == nil,
+                      self.attachments.giphyId == nil {
                 self.state = .empty
             }
         }
@@ -161,6 +170,26 @@ private extension InputViewModel {
 
     func unsubscribeRecordPlayer() {
         recordPlayerSubscription = nil
+    }
+    
+    func subscribeGiphy() {
+        $showGiphy
+            .sink { [weak self] value in
+                if !value {
+                    self?.attachments.giphyId = nil
+                }
+            }
+            .store(in: &subscriptions)
+    }
+    
+    func subscribeRoshambo() {
+//        $showRoshambo
+//            .sink { [weak self] value in
+//                if !value {
+//                    self?.attachments.giphyId = nil
+//                }
+//            }
+//            .store(in: &subscriptions)
     }
 }
 
@@ -200,7 +229,8 @@ private extension InputViewModel {
                     medias: attachments.medias,
                     recording: attachments.recording,
                     replyMessage: attachments.replyMessage,
-                    createdAt: Date()
+                    createdAt: Date(),
+                    giphyId: attachments.giphyId
                 )
             }
             .sink { [weak self] draft in

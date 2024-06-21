@@ -30,6 +30,10 @@ let package = Package(
             url: "https://github.com/exyte/ActivityIndicatorView",
             from: "1.0.0"
         ),
+        .package(
+            url: "https://github.com/Giphy/giphy-ios-sdk",
+            from: "2.2.9"
+        ),
     ],
     targets: [
         .target(
@@ -38,7 +42,8 @@ let package = Package(
                 .product(name: "SwiftUIIntrospect", package: "swiftui-introspect"),
                 .product(name: "ExyteMediaPicker", package: "MediaPicker"),
                 .product(name: "FloatingButton", package: "FloatingButton"),
-                .product(name: "ActivityIndicatorView", package: "ActivityIndicatorView")
+                .product(name: "ActivityIndicatorView", package: "ActivityIndicatorView"),
+                .product(name: "GiphyUISDK", package: "giphy-ios-sdk")
             ]
         ),
         .testTarget(
