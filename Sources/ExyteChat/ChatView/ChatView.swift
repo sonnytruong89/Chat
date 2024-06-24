@@ -190,6 +190,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
         }
         .sheet(isPresented: $inputViewModel.showGiphy) {
             GiphyPickerView(apiKey: giphyAPIKey ?? "", inputViewModel: inputViewModel)
+                .ignoresSafeArea()
         }
         .environmentObject(keyboardState)
     }

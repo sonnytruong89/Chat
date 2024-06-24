@@ -20,6 +20,7 @@ struct GiphyPickerView: UIViewControllerRepresentable {
         giphy.dimBackground = true
         giphy.modalPresentationStyle = .pageSheet
         giphy.showConfirmationScreen = true
+        giphy.theme = GPHTheme(type: .automatic)
         giphy.delegate = context.coordinator
         return giphy
     }
