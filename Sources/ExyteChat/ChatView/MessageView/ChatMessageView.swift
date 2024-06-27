@@ -23,6 +23,7 @@ struct ChatMessageView<MessageContent: View>: View {
     let isDisplayingMessageMenu: Bool
     let showMessageTimeView: Bool
     let messageFont: UIFont
+    let isLastMessage: Bool
 
     var body: some View {
         Group {
@@ -41,6 +42,7 @@ struct ChatMessageView<MessageContent: View>: View {
                     messageUseMarkdown: messageUseMarkdown,
                     isDisplayingMessageMenu: isDisplayingMessageMenu,
                     showMessageTimeView: showMessageTimeView,
+                    isLastMessage: isLastMessage,
                     font: messageFont)
             }
         }

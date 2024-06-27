@@ -105,6 +105,10 @@ extension Message {
     var time: String {
         DateFormatter.timeFormatter.string(from: createdAt)
     }
+    
+    var isRoshambo: Bool {
+        text.starts(with: "/roshambo")
+    }
 }
 
 extension Message: Equatable {

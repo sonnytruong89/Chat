@@ -34,7 +34,6 @@ public final class InputViewModel: ObservableObject {
         subscribeValidation()
         subscribePicker()
         subscribeGiphy()
-        subscribeRoshambo()
     }
 
     func onStop() {
@@ -102,7 +101,8 @@ public final class InputViewModel: ObservableObject {
             state = .pausedRecording
             recordingPlayer?.pause()
         case .roshambo:
-            showRoshambo = true
+            attachments.text = "/roshambo \(Roshambo.shared.generate())"
+            send()
         case .giphy:
             showGiphy = true
         }
@@ -180,16 +180,6 @@ private extension InputViewModel {
                 }
             }
             .store(in: &subscriptions)
-    }
-    
-    func subscribeRoshambo() {
-//        $showRoshambo
-//            .sink { [weak self] value in
-//                if !value {
-//                    self?.attachments.giphyId = nil
-//                }
-//            }
-//            .store(in: &subscriptions)
     }
 }
 

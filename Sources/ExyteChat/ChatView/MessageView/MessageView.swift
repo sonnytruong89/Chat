@@ -22,6 +22,7 @@ struct MessageView: View {
     let messageUseMarkdown: Bool
     let isDisplayingMessageMenu: Bool
     let showMessageTimeView: Bool
+    let isLastMessage: Bool
 
     @State var avatarViewSize: CGSize = .zero
     @State var statusSize: CGSize = .zero
@@ -92,17 +93,30 @@ struct MessageView: View {
 
             VStack(alignment: message.user.isCurrentUser ? .trailing : .leading, spacing: 2) {
                 if !isDisplayingMessageMenu, let reply = message.replyMessage?.toMessage() {
-                    replyBubbleView(reply)
-                        .opacity(0.5)
-                        .padding(message.user.isCurrentUser ? .trailing : .leading, 10)
-                        .overlay(alignment: message.user.isCurrentUser ? .trailing : .leading) {
-                            Capsule()
-                                .foregroundColor(theme.colors.buttonBackground)
-                                .frame(width: 2)
+                    Group {
+                        if message.isRoshambo {
+                            roshamboView(message)
+                        } else {
+                            replyBubbleView(reply)
                         }
+                    }
+                    .opacity(0.5)
+                    .padding(message.user.isCurrentUser ? .trailing : .leading, 10)
+                    .overlay(alignment: message.user.isCurrentUser ? .trailing : .leading) {
+                        Capsule()
+                            .foregroundColor(theme.colors.buttonBackground)
+                            .frame(width: 2)
+                    }
                 }
-                bubbleView(message)
-                    .padding(.trailing, 10)
+
+                Group {
+                    if message.isRoshambo {
+                        roshamboView(message)
+                    } else {
+                        bubbleView(message)
+                    }
+                }
+                .padding(.trailing, 10)
             }
         }
         .padding(.top, topPadding)
@@ -117,6 +131,12 @@ struct MessageView: View {
                 viewModel.sendMessage(draft)
             }
         }
+    }
+
+    @ViewBuilder
+    func roshamboView(_ message: Message) -> some View {
+        MessageRoshamboView(roshambo: message.text,
+                            showAnimation: isLastMessage)
     }
 
     @ViewBuilder
@@ -350,6 +370,7 @@ struct MessageView_Preview: PreviewProvider {
                 messageUseMarkdown: false,
                 isDisplayingMessageMenu: false,
                 showMessageTimeView: true,
+                isLastMessage: true,
                 font: UIFontMetrics.default.scaledFont(for: UIFont.systemFont(ofSize: 15))
             )
         }
