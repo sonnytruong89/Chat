@@ -94,8 +94,8 @@ struct MessageView: View {
             VStack(alignment: message.user.isCurrentUser ? .trailing : .leading, spacing: 2) {
                 if !isDisplayingMessageMenu, let reply = message.replyMessage?.toMessage() {
                     Group {
-                        if message.isRoshambo {
-                            roshamboView(message)
+                        if reply.isRoshambo {
+                            roshamboView(reply)
                         } else {
                             replyBubbleView(reply)
                         }
